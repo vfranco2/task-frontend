@@ -1,0 +1,44 @@
+@font-face {
+  font-family: "nsLight";
+  src: url("./fonts/NunitoSans.ttf");
+  font-weight: 100;
+  font-style: normal;
+}
+@font-face {
+  font-family: "nsRegular";
+  src: url("./fonts/NunitoSans.ttf");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "nsSemiBold";
+  src: url("./fonts/NunitoSans.ttf");
+  font-weight: 500;
+  font-style: normal;
+}
+@font-face {
+  font-family: "nsBold";
+  src: url("./fonts/NunitoSans.ttf");
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "nsHeaderLight";
+  src: url("./fonts/NunitoSans.ttf");
+  font-weight: 200;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "nsHeaderRegular";
+  src: url("./fonts/NunitoSans.ttf");
+  font-weight: 400;
+  font-style: normal;
+}
+@font-face {
+  font-family: "nsHeaderBold";
+  src: url("./fonts/NunitoSans.ttf");
+  font-weight: 800;
+  font-style: normal;
+}
