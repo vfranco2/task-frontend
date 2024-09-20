@@ -15,19 +15,26 @@ import {
   Switch,
   Text,
 } from "@tycholabs/armillary";
-import React from "react";
+import React, { Dispatch, SetStateAction } from "react";
 import { Task } from "../../constants/Types";
 import { MoreHorizontal, Pencil, Trash } from "lucide-react";
 import { priorityColors } from "../../constants";
-import { useMobileStatus } from "../../utils/isMobileStatus";
 
 interface TicketCardProps {
   task: Partial<Task>;
+  setTaskToEdit: Dispatch<SetStateAction<Partial<Task> | null>>;
+  setTaskToDelete: Dispatch<SetStateAction<Partial<Task> | null>>;
+  setEditTaskModalOpen: Dispatch<SetStateAction<boolean>>;
+  setDeleteTaskModalOpen: Dispatch<SetStateAction<boolean>>;
 }
 
-export default function TicketCard({ task }: TicketCardProps) {
-  const isMobile = useMobileStatus();
-
+export default function TicketCard({
+  task,
+  setTaskToEdit,
+  setTaskToDelete,
+  setEditTaskModalOpen,
+  setDeleteTaskModalOpen,
+}: TicketCardProps) {
   return (
     <Card
       style={{
@@ -44,11 +51,7 @@ export default function TicketCard({ task }: TicketCardProps) {
           height: "auto",
         }}
       />
-      <Flex
-        direction={isMobile ? "column" : "row"}
-        gap="16px"
-        style={{ padding: "16px 0px" }}
-      >
+      <Flex direction={"column"} gap="16px" style={{ padding: "16px 0px" }}>
         <Flex direction="row" gap="16px">
           <Checkbox checked={task.checked} />
           <Flex direction="column">
@@ -63,18 +66,11 @@ export default function TicketCard({ task }: TicketCardProps) {
             <Text color={!task.checked ? "secondary" : "subdued"}>
               {task.description}
             </Text>
-            <Text color={!task.checked ? "secondary" : "subdued"}>
-              [DUE DATES HERE]
-            </Text>
-          </Flex>
-        </Flex>
 
-        <Flex
-          direction={isMobile ? "row-reverse" : "column"}
-          style={{ width: "auto" }}
-          gap="8px"
-          align={isMobile ? "center" : "end"}
-        >
+            {/* <Text color={!task.checked ? "secondary" : "subdued"}>
+              [DUE DATES HERE]
+            </Text> */}
+          </Flex>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button width="40px" padding="0px" type="ghost">
@@ -87,29 +83,42 @@ export default function TicketCard({ task }: TicketCardProps) {
                   Ticket options
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem style={{ height: "30px" }}>
+                <DropdownMenuItem
+                  style={{ height: "30px" }}
+                  onClick={() => {
+                    setTaskToEdit(task);
+                    setEditTaskModalOpen(true);
+                  }}
+                >
                   <Pencil width="16px" height="16px" />
                   Edit
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem style={{ height: "30px" }}>
+                <DropdownMenuItem
+                  style={{ height: "30px" }}
+                  onClick={() => {
+                    setTaskToDelete(task);
+                    setDeleteTaskModalOpen(true);
+                  }}
+                >
                   <Trash width="16px" height="16px" />
                   Delete
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenuPortal>
           </DropdownMenu>
-          <Flex
-            direction="row"
-            gap="8px"
-            align="center"
-            style={{ textAlign: "left" }}
-          >
-            <Switch />
-            <Text color="secondary" size="small" weight="semiBold">
-              Shared with Todoist
-            </Text>
-          </Flex>
+        </Flex>
+
+        <Flex
+          direction="row"
+          gap="8px"
+          align="center"
+          style={{ textAlign: "left" }}
+        >
+          <Switch />
+          <Text color="secondary" size="small" weight="semiBold">
+            Shared with Todoist
+          </Text>
         </Flex>
       </Flex>
     </Card>

@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 
-export function useMobileStatus() {
+export const useMobileStatus = () => {
   const [isMobile, setIsMobile] = useState<boolean>(false);
   useEffect(() => {
     const handleWindowResize = () => {
-      if (window.innerWidth <= 768) {
+      if (window.innerWidth <= window.innerHeight) {
         setIsMobile(true);
       } else {
         setIsMobile(false);
@@ -16,4 +16,4 @@ export function useMobileStatus() {
     };
   }, []);
   return isMobile;
-}
+};
