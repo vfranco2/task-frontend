@@ -12,7 +12,6 @@ import {
   Heading,
   NavMenu,
   NavMenuButtonRow,
-  Text,
   NavMenuButton,
 } from "@tycholabs/armillary";
 import type { AppProps } from "next/app";
@@ -42,12 +41,21 @@ const themeMidnight: ArmillaryColorTheme = {
 
 export default function App({ Component, pageProps }: AppProps) {
   const queryClient = new QueryClient();
-  const isMobile = useMobileStatus();
+  const isResizedMobile = useMobileStatus();
+  const [isMobile, setIsMobile] = useState(false);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  useEffect(() => {
+    setIsMobile(window.innerHeight > window.innerWidth);
+  }, [mounted]);
+
+  useEffect(() => {
+    setIsMobile(isResizedMobile);
+  }, [isResizedMobile]);
 
   if (!mounted) {
     return null;
@@ -108,7 +116,6 @@ export default function App({ Component, pageProps }: AppProps) {
                   </NavbarButtonColumn>
                 </Navbar>
               )}
-
               <Content>
                 <ContentMain scrollY="scroll" style={{ paddingRight: "0px" }}>
                   <Flex justify="center">
