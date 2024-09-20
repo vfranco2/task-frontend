@@ -19,6 +19,7 @@ import React, { Dispatch, SetStateAction } from "react";
 import { Task } from "../../constants/Types";
 import { MoreHorizontal, Pencil, Trash } from "lucide-react";
 import { priorityColors } from "../../constants";
+import { CheckTask } from "../../hooks/tasks";
 
 interface TicketCardProps {
   task: Partial<Task>;
@@ -26,6 +27,9 @@ interface TicketCardProps {
   setTaskToDelete: Dispatch<SetStateAction<Partial<Task> | null>>;
   setEditTaskModalOpen: Dispatch<SetStateAction<boolean>>;
   setDeleteTaskModalOpen: Dispatch<SetStateAction<boolean>>;
+  setToastVisible: Dispatch<SetStateAction<boolean>>;
+  setToastText: Dispatch<SetStateAction<string>>;
+  queryRefetch: any;
 }
 
 export default function TicketCard({
@@ -34,7 +38,31 @@ export default function TicketCard({
   setTaskToDelete,
   setEditTaskModalOpen,
   setDeleteTaskModalOpen,
+  setToastVisible,
+  setToastText,
+  queryRefetch,
 }: TicketCardProps) {
+  const checkTask = CheckTask(task.id, !task.checked);
+
+  const handleCheckClick = () => {
+    checkTask.mutateAsync().then((res) => {
+      console.log(res);
+      //@ts-expect-error
+      if (res?.editTask) {
+        queryRefetch();
+      } else {
+        setToastText("Error!");
+        setToastVisible(true);
+        const timeId = setTimeout(() => {
+          setToastVisible(false);
+        }, 3000);
+        return () => {
+          clearTimeout(timeId);
+        };
+      }
+    });
+  };
+
   return (
     <Card
       style={{
@@ -53,7 +81,10 @@ export default function TicketCard({
       />
       <Flex direction={"column"} gap="16px" style={{ padding: "16px 0px" }}>
         <Flex direction="row" gap="16px">
-          <Checkbox checked={task.checked} />
+          <Checkbox
+            checked={task.checked}
+            onCheckedChange={(v: boolean) => handleCheckClick()}
+          />
           <Flex direction="column">
             <Heading
               color={!task.checked ? "primary" : "secondary"}
