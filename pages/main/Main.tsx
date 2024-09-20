@@ -6,6 +6,7 @@ import {
   DialogTrigger,
   Flex,
   Heading,
+  Separator,
   Text,
   Toast,
 } from "@tycholabs/armillary";
@@ -64,17 +65,51 @@ export default function Main() {
           exists={tasksData && tasksData.length > 0}
           title="No tickets found!"
         >
+          {console.log(tasksData)}
+          <Heading size="xSmall">To do</Heading>
           {tasksData &&
             tasksData.length > 0 &&
-            tasksData.map((task) => (
-              <TicketCard
-                task={task}
-                setTaskToEdit={setTaskToEdit}
-                setTaskToDelete={setTaskToDelete}
-                setEditTaskModalOpen={setEditTaskModalOpen}
-                setDeleteTaskModalOpen={setDeleteTaskModalOpen}
-              />
-            ))}
+            tasksData
+              .sort((a, b) => {
+                return b.updated.valueOf() - a.updated.valueOf();
+              })
+              .filter((task) => !task.checked)
+              .map((task) => (
+                <TicketCard
+                  task={task}
+                  setTaskToEdit={setTaskToEdit}
+                  setTaskToDelete={setTaskToDelete}
+                  setEditTaskModalOpen={setEditTaskModalOpen}
+                  setDeleteTaskModalOpen={setDeleteTaskModalOpen}
+                  setToastVisible={setToastVisible}
+                  setToastText={setToastText}
+                  queryRefetch={tasksResponse.refetch}
+                />
+              ))}
+
+          {tasksData && tasksData.length > 0 && (
+            <>
+              <Separator />
+              <Heading size="xSmall">Completed</Heading>
+              {tasksData
+                .sort((a, b) => {
+                  return b.updated.valueOf() - a.updated.valueOf();
+                })
+                .filter((task) => task.checked)
+                .map((task) => (
+                  <TicketCard
+                    task={task}
+                    setTaskToEdit={setTaskToEdit}
+                    setTaskToDelete={setTaskToDelete}
+                    setEditTaskModalOpen={setEditTaskModalOpen}
+                    setDeleteTaskModalOpen={setDeleteTaskModalOpen}
+                    setToastVisible={setToastVisible}
+                    setToastText={setToastText}
+                    queryRefetch={tasksResponse.refetch}
+                  />
+                ))}
+            </>
+          )}
         </DataOverlay>
       </Flex>
       <Dialog open={editTaskModalOpen} onOpenChange={setEditTaskModalOpen}>

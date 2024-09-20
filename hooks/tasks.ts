@@ -12,6 +12,7 @@ const queryAllTasks = gql`
       description
       content
       priority
+      updated
     }
   }
 `;
@@ -45,6 +46,14 @@ const mutateEditTask = gql`
 const mutateDeleteTask = gql`
   mutation EditTask($id: ID!) {
     deleteTask(id: $id) {
+      id
+    }
+  }
+`;
+
+const mutateCheckTask = gql`
+  mutation EditTask($id: ID!, $checked: Boolean!) {
+    editTask(id: $id, checked: $checked) {
       id
     }
   }
@@ -100,6 +109,18 @@ export const DeleteTask = (id: string) => {
     mutationFn: async () =>
       graphQLClient.request(mutateDeleteTask, {
         id: id,
+      }),
+  });
+  return response;
+};
+
+export const CheckTask = (id: string, checked: boolean) => {
+  const response = useMutation({
+    mutationKey: [`CheckTask`],
+    mutationFn: async () =>
+      graphQLClient.request(mutateCheckTask, {
+        id: id,
+        checked: checked,
       }),
   });
   return response;
