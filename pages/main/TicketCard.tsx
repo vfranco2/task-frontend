@@ -1,4 +1,5 @@
 import {
+  Badge,
   Button,
   Card,
   Checkbox,
@@ -17,9 +18,9 @@ import {
 } from "@tycholabs/armillary";
 import React, { Dispatch, SetStateAction } from "react";
 import { Task } from "../../constants/Types";
-import { MoreHorizontal, Pencil, Trash } from "lucide-react";
+import { LoaderCircle, MoreHorizontal, Pencil, Trash } from "lucide-react";
 import { priorityColors } from "../../constants";
-import { CheckTask } from "../../hooks/tasks";
+import { CheckTask, ShareTask } from "../../hooks/tasks";
 
 interface TicketCardProps {
   task: Partial<Task>;
@@ -42,10 +43,30 @@ export default function TicketCard({
   setToastText,
   queryRefetch,
 }: TicketCardProps) {
-  const checkTask = CheckTask(task.id, !task.checked);
+  const checkTask = CheckTask(task.id, !task.checked, task.shared);
+  const shareTask = ShareTask(task.id, !task.shared);
 
   const handleCheckClick = () => {
     checkTask.mutateAsync().then((res) => {
+      console.log(res);
+      //@ts-expect-error
+      if (res?.editTask) {
+        queryRefetch();
+      } else {
+        setToastText("Error!");
+        setToastVisible(true);
+        const timeId = setTimeout(() => {
+          setToastVisible(false);
+        }, 3000);
+        return () => {
+          clearTimeout(timeId);
+        };
+      }
+    });
+  };
+
+  const handleShareClick = () => {
+    shareTask.mutateAsync().then((res) => {
       console.log(res);
       //@ts-expect-error
       if (res?.editTask) {
@@ -146,10 +167,17 @@ export default function TicketCard({
           align="center"
           style={{ textAlign: "left" }}
         >
-          <Switch />
-          <Text color="secondary" size="small" weight="semiBold">
-            Shared with Todoist
-          </Text>
+          <Switch
+            checked={task.shared}
+            disabled={shareTask.isPending}
+            onCheckedChange={(v: boolean) => {
+              handleShareClick();
+            }}
+          />
+          <Badge type={task.shared ? "primary" : "outline"}>
+            {shareTask.isPending && <LoaderCircle size={14} />}
+            {task.shared ? "Shared" : "Share"} with Todoist
+          </Badge>
         </Flex>
       </Flex>
     </Card>

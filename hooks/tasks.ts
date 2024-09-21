@@ -13,6 +13,7 @@ const queryAllTasks = gql`
       content
       priority
       updated
+      shared
     }
   }
 `;
@@ -31,12 +32,14 @@ const mutateEditTask = gql`
     $content: String!
     $priority: Int!
     $description: String!
+    $shared: Boolean!
   ) {
     editTask(
       id: $id
       content: $content
       priority: $priority
       description: $description
+      shared: $shared
     ) {
       id
     }
@@ -52,8 +55,16 @@ const mutateDeleteTask = gql`
 `;
 
 const mutateCheckTask = gql`
-  mutation EditTask($id: ID!, $checked: Boolean!) {
-    editTask(id: $id, checked: $checked) {
+  mutation EditTask($id: ID!, $checked: Boolean!, $shared: Boolean!) {
+    editTask(id: $id, checked: $checked, shared: $shared) {
+      id
+    }
+  }
+`;
+
+const mutateShareTask = gql`
+  mutation EditTask($id: ID!, $todoistLink: Boolean!) {
+    editTask(id: $id, todoistLink: $todoistLink) {
       id
     }
   }
@@ -88,7 +99,8 @@ export const EditTask = (
   id: string,
   content: string,
   priority: number,
-  description: string
+  description: string,
+  shared: boolean
 ) => {
   const response = useMutation({
     mutationKey: [`EditTask`],
@@ -98,6 +110,7 @@ export const EditTask = (
         content: content,
         priority: priority,
         description: description,
+        shared: shared,
       }),
   });
   return response;
@@ -114,13 +127,26 @@ export const DeleteTask = (id: string) => {
   return response;
 };
 
-export const CheckTask = (id: string, checked: boolean) => {
+export const CheckTask = (id: string, checked: boolean, shared: boolean) => {
   const response = useMutation({
     mutationKey: [`CheckTask`],
     mutationFn: async () =>
       graphQLClient.request(mutateCheckTask, {
         id: id,
         checked: checked,
+        shared: shared,
+      }),
+  });
+  return response;
+};
+
+export const ShareTask = (id: string, share: boolean) => {
+  const response = useMutation({
+    mutationKey: [`ShareTask`],
+    mutationFn: async () =>
+      graphQLClient.request(mutateShareTask, {
+        id: id,
+        todoistLink: share,
       }),
   });
   return response;

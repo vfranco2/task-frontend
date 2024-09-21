@@ -53,7 +53,8 @@ export const EditTaskModal = ({
     task.id,
     getValues("content") ?? "",
     parseInt(getValues("priority")) ?? 1,
-    getValues("description") ?? ""
+    getValues("description") ?? "",
+    task.shared
   );
 
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);

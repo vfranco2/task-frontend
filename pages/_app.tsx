@@ -82,7 +82,7 @@ export default function App({ Component, pageProps }: AppProps) {
           <Flex direction="column" gap="0" style={{ height: "100vh" }}>
             <Page direction={isMobile ? "column" : "row"}>
               {isMobile ? (
-                <NavMenu title="ServiceLater">
+                <NavMenu title={"ServiceLater"}>
                   <NavMenuButtonRow>
                     {navItems.map((item) => (
                       <Link href={item.link}>
@@ -117,7 +117,8 @@ export default function App({ Component, pageProps }: AppProps) {
                 </Navbar>
               )}
               <Content>
-                <ContentMain scrollY="scroll" style={{ paddingRight: "0px" }}>
+                <ContentMain scrollY="scroll">
+                  {/* style={{ paddingRight: "0px" }} */}
                   <Flex justify="center">
                     <Flex
                       style={{
