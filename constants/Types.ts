@@ -11,4 +11,5 @@ export interface Task {
   priority: number;
   external_project_id: string;
   updated: Date;
+  shared: boolean;
 }
