@@ -10,7 +10,7 @@ import {
   Text,
   Toast,
 } from "@tycholabs/armillary";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { GetAllTasks } from "../../hooks/tasks";
 import { Task } from "../../constants/Types";
 import TicketCard from "./TicketCard";
@@ -18,6 +18,7 @@ import { Plus } from "lucide-react";
 import AddTaskModal from "./AddTaskModal";
 import EditTaskModal from "./EditTaskModal";
 import DeleteTaskModal from "./DeleteTaskModal";
+import { endpoint } from "../../constants/Endpoints";
 
 export default function Main() {
   const tasksResponse = GetAllTasks();
@@ -32,6 +33,26 @@ export default function Main() {
 
   const [taskToEdit, setTaskToEdit] = useState<Partial<Task> | null>(null);
   const [taskToDelete, setTaskToDelete] = useState<Partial<Task> | null>(null);
+
+  useEffect(() => {
+    const ws = new WebSocket(`${endpoint}/refresh`);
+    try {
+      ws.onopen = () => {
+        console.log("Opened connection!");
+      };
+      ws.onclose = function () {
+        console.log("Closed connection!");
+      };
+      ws.onerror = function () {
+        console.log("Connection error detected!");
+      };
+      ws.onmessage = () => {
+        tasksResponse.refetch();
+      };
+    } catch {
+      console.log("Failed to connect to TaskTracker");
+    }
+  }, []);
 
   return (
     <Flex direction="column" gap="30px">
