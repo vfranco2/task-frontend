@@ -22,7 +22,7 @@ import { LoaderCircle, MoreHorizontal, Pencil, Trash } from "lucide-react";
 import { priorityColors } from "../../constants";
 import { CheckTask, ShareTask } from "../../hooks/tasks";
 
-interface TicketCardProps {
+interface TaskCardProps {
   task: Partial<Task>;
   setTaskToEdit: Dispatch<SetStateAction<Partial<Task> | null>>;
   setTaskToDelete: Dispatch<SetStateAction<Partial<Task> | null>>;
@@ -33,7 +33,7 @@ interface TicketCardProps {
   queryRefetch: any;
 }
 
-export default function TicketCard({
+export default function TaskCard({
   task,
   setTaskToEdit,
   setTaskToDelete,
@@ -42,7 +42,7 @@ export default function TicketCard({
   setToastVisible,
   setToastText,
   queryRefetch,
-}: TicketCardProps) {
+}: TaskCardProps) {
   const checkTask = CheckTask(task.id, !task.checked, task.shared);
   const shareTask = ShareTask(task.id, !task.shared);
 
@@ -131,10 +131,6 @@ export default function TicketCard({
             </DropdownMenuTrigger>
             <DropdownMenuPortal>
               <DropdownMenuContent style={{ gap: "8px" }}>
-                <DropdownMenuLabel style={{ height: "30px" }}>
-                  Ticket options
-                </DropdownMenuLabel>
-                <DropdownMenuSeparator />
                 <DropdownMenuItem
                   style={{ height: "30px" }}
                   onClick={() => {
