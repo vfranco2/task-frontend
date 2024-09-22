@@ -4,7 +4,6 @@ import {
   TextInput,
   FormField,
   Button,
-  Textarea,
   ToggleGroup,
   ToggleGroupItem,
 } from "@tycholabs/armillary";
@@ -116,6 +115,10 @@ export const AddTaskModal = ({
                   value={watch(`content`)}
                   {...register(`content`, {
                     required: "Please enter a task title.",
+                    maxLength: {
+                      value: 120,
+                      message: "Title cannot be longer than 120 characters.",
+                    },
                   })}
                 />
               </FormField>
@@ -127,15 +130,13 @@ export const AddTaskModal = ({
                   cap: 240,
                 }}
               >
-                <Textarea
-                  style={{ resize: "none", height: "60px" }}
-                  maxLength={140}
+                <TextInput
                   value={watch(`description`)}
                   {...register(`description`, {
                     maxLength: {
                       value: 240,
                       message:
-                        "Description cannot be longer than 140 characters.",
+                        "Description cannot be longer than 240 characters.",
                     },
                   })}
                 />

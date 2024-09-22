@@ -13,7 +13,7 @@ import {
 import React, { useEffect, useState } from "react";
 import { GetAllTasks } from "../../hooks/tasks";
 import { Task } from "../../constants/Types";
-import TicketCard from "./TicketCard";
+import TaskCard from "./TaskCard";
 import { Plus } from "lucide-react";
 import AddTaskModal from "./AddTaskModal";
 import EditTaskModal from "./EditTaskModal";
@@ -57,9 +57,9 @@ export default function Main() {
   return (
     <Flex direction="column" gap="30px">
       <Flex direction="column" gap="8px">
-        <Heading>Tickets</Heading>
+        <Heading>Tasks</Heading>
         <Text color="secondary" size="medium">
-          View active and completed tickets here
+          View active and completed tasks here
         </Text>
       </Flex>
       <Dialog open={addTaskModalOpen} onOpenChange={setAddTaskModalOpen}>
@@ -84,7 +84,7 @@ export default function Main() {
           loading={tasksResponse.isLoading}
           error={tasksResponse.isError}
           exists={tasksData && tasksData.length > 0}
-          title="No tickets found!"
+          title="No tasks found!"
         >
           {console.log(tasksData)}
           <Heading size="xSmall">To do</Heading>
@@ -96,7 +96,7 @@ export default function Main() {
               })
               .filter((task) => !task.checked)
               .map((task) => (
-                <TicketCard
+                <TaskCard
                   task={task}
                   setTaskToEdit={setTaskToEdit}
                   setTaskToDelete={setTaskToDelete}
@@ -118,7 +118,7 @@ export default function Main() {
                 })
                 .filter((task) => task.checked)
                 .map((task) => (
-                  <TicketCard
+                  <TaskCard
                     task={task}
                     setTaskToEdit={setTaskToEdit}
                     setTaskToDelete={setTaskToDelete}
