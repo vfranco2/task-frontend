@@ -5,22 +5,20 @@ import {
   Page,
   Navbar,
   NavbarButtonColumn,
-  NavbarButton,
   Content,
   ContentMain,
-  NavMenuItem,
   Heading,
   NavMenu,
   NavMenuButtonRow,
-  NavMenuButton,
+  NavMenuOptions,
+  Button,
 } from "@tycholabs/armillary";
 import type { AppProps } from "next/app";
 import { useEffect, useState } from "react";
 import { ThemeProvider } from "styled-components";
 import "../styles/global.css";
 import "../styles/fonts.css";
-import { ClipboardCheck, Navigation } from "lucide-react";
-import Link from "next/link";
+import { Github } from "lucide-react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useMobileStatus } from "../utils/isMobileStatus";
 
@@ -61,20 +59,6 @@ export default function App({ Component, pageProps }: AppProps) {
     return null;
   }
 
-  const navItems: NavMenuItem[] = [
-    {
-      title: "Tasks",
-      icon: <ClipboardCheck size={18} />,
-      link: `/`,
-    },
-
-    {
-      title: "Navigation",
-      icon: <Navigation size={18} />,
-      link: `/navigation`,
-    },
-  ];
-
   return (
     typeof window != "undefined" && (
       <ThemeProvider theme={getArmillaryTheme(themeMidnight)}>
@@ -82,43 +66,55 @@ export default function App({ Component, pageProps }: AppProps) {
           <Flex direction="column" gap="0" style={{ height: "100vh" }}>
             <Page direction={isMobile ? "column" : "row"}>
               {isMobile ? (
-                <NavMenu title={"ServiceLater"}>
-                  <NavMenuButtonRow>
-                    {navItems.map((item) => (
-                      <Link href={item.link}>
-                        <NavMenuButton
-                          title={item.title}
-                          icon={item.icon}
-                          selected={
-                            "/" + location.pathname.split("/")[1] === item.link
-                          }
-                        />
-                      </Link>
-                    ))}
-                  </NavMenuButtonRow>
+                <NavMenu title="">
+                  <Flex
+                    direction="row"
+                    align="center"
+                    justify="left"
+                    style={{ width: "auto" }}
+                  >
+                    <Heading size="small">TaskTracker</Heading>
+                  </Flex>
+                  <NavMenuButtonRow></NavMenuButtonRow>
+                  <NavMenuOptions>
+                    <a
+                      href="https://github.com/vfranco2/task-backend"
+                      rel="noopener noreferrer"
+                    >
+                      <Button
+                        type="secondary"
+                        width="98px"
+                        style={{ padding: "0px" }}
+                      >
+                        <Github size={18} />
+                        GitHub
+                      </Button>
+                    </a>
+                  </NavMenuOptions>
                 </NavMenu>
               ) : (
                 <Navbar width="18vw">
-                  <Heading size="small">ServiceLater</Heading>
+                  <Heading size="small">TaskTracker</Heading>
                   <NavbarButtonColumn>
                     <Flex style={{ height: "24px", paddingTop: "18px" }} />
-                    {navItems.map((item) => (
-                      <Link href={item.link}>
-                        <NavbarButton
-                          title={item.title}
-                          icon={item.icon}
-                          selected={
-                            "/" + location.pathname.split("/")[1] === item.link
-                          }
-                        />
-                      </Link>
-                    ))}
                   </NavbarButtonColumn>
+                  <a
+                    href="https://github.com/vfranco2/task-backend"
+                    rel="noopener noreferrer"
+                  >
+                    <Button
+                      type="secondary"
+                      width="98px"
+                      style={{ padding: "0px" }}
+                    >
+                      <Github size={18} />
+                      GitHub
+                    </Button>
+                  </a>
                 </Navbar>
               )}
               <Content>
                 <ContentMain scrollY="scroll">
-                  {/* style={{ paddingRight: "0px" }} */}
                   <Flex justify="center">
                     <Flex
                       style={{
