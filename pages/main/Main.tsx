@@ -22,7 +22,6 @@ import { endpoint } from "../../constants/Endpoints";
 
 export default function Main() {
   const tasksResponse = GetAllTasks();
-  //@ts-expect-error
   const tasksData: Partial<Task>[] = tasksResponse?.data?.tasks;
 
   const [addTaskModalOpen, setAddTaskModalOpen] = useState(false);
@@ -86,7 +85,6 @@ export default function Main() {
           exists={tasksData && tasksData.length > 0}
           title="No tasks found!"
         >
-          {console.log(tasksData)}
           <Heading size="xSmall">To do</Heading>
           {tasksData &&
             tasksData.length > 0 &&

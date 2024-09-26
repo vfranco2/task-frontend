@@ -1,6 +1,12 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import {
+  UseMutationResult,
+  UseQueryResult,
+  useMutation,
+  useQuery,
+} from "@tanstack/react-query";
 import { request, gql, GraphQLClient } from "graphql-request";
 import { endpoint } from "../constants/Endpoints";
+import { Task } from "../constants/Types";
 
 const graphQLClient = new GraphQLClient(`${endpoint}/tasks`);
 
@@ -75,7 +81,7 @@ export const GetAllTasks = () => {
     queryKey: [`GetAllTasks`],
     queryFn: async () => request(`${endpoint}/tasks`, queryAllTasks),
   });
-  return response;
+  return response as UseQueryResult<{ tasks: Task[] }, Error>;
 };
 
 export const AddTask = (
@@ -92,7 +98,7 @@ export const AddTask = (
         description: description,
       }),
   });
-  return response;
+  return response as UseMutationResult<{ addTask: { id: string } }, Error>;
 };
 
 export const EditTask = (
@@ -113,7 +119,7 @@ export const EditTask = (
         shared: shared,
       }),
   });
-  return response;
+  return response as UseMutationResult<{ editTask: { id: string } }, Error>;
 };
 
 export const DeleteTask = (id: string) => {
@@ -124,7 +130,7 @@ export const DeleteTask = (id: string) => {
         id: id,
       }),
   });
-  return response;
+  return response as UseMutationResult<{ deleteTask: { id: string } }, Error>;
 };
 
 export const CheckTask = (id: string, checked: boolean, shared: boolean) => {
@@ -137,7 +143,7 @@ export const CheckTask = (id: string, checked: boolean, shared: boolean) => {
         shared: shared,
       }),
   });
-  return response;
+  return response as UseMutationResult<{ editTask: { id: string } }, Error>;
 };
 
 export const ShareTask = (id: string, share: boolean) => {
@@ -149,5 +155,5 @@ export const ShareTask = (id: string, share: boolean) => {
         todoistLink: share,
       }),
   });
-  return response;
+  return response as UseMutationResult<{ editTask: { id: string } }, Error>;
 };

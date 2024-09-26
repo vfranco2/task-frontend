@@ -47,9 +47,7 @@ export default function TaskCard({
   const shareTask = ShareTask(task.id, !task.shared);
 
   const handleCheckClick = () => {
-    checkTask.mutateAsync().then((res) => {
-      console.log(res);
-      //@ts-expect-error
+    checkTask.mutateAsync(undefined).then((res) => {
       if (res?.editTask) {
         queryRefetch();
       } else {
@@ -66,9 +64,7 @@ export default function TaskCard({
   };
 
   const handleShareClick = () => {
-    shareTask.mutateAsync().then((res) => {
-      console.log(res);
-      //@ts-expect-error
+    shareTask.mutateAsync(undefined).then((res) => {
       if (res?.editTask) {
         queryRefetch();
       } else {

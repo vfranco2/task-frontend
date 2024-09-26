@@ -60,8 +60,7 @@ export const EditTaskModal = ({
 
   const handleSubmitButtonClick = () => {
     setIsSubmitting(true);
-    editTask.mutateAsync().then((res) => {
-      //@ts-expect-error
+    editTask.mutateAsync(undefined).then((res) => {
       if (res?.editTask) {
         queryRefetch();
         setModalOpen(false);

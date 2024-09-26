@@ -24,8 +24,7 @@ export const DeleteTaskModal = ({
 
   const handleSubmitButtonClick = () => {
     setIsSubmitting(true);
-    deleteTask.mutateAsync().then((res) => {
-      //@ts-expect-error
+    deleteTask.mutateAsync(undefined).then((res) => {
       if (res?.deleteTask) {
         queryRefetch();
         setModalOpen(false);
